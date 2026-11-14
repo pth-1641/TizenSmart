@@ -1,0 +1,74 @@
+name: Build APK
+
+on:
+  push:
+    branches: [ "main", "master" ]
+    tags: [ "v*" ]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      HAS_SIGNING_KEY: ${{ secrets.SIGNING_KEY != '' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Version name
+        id: ver
+        run: |
+          sed -i "s/versionName \"\(.*\)\"/versionName \"\1-${GITHUB_RUN_NUMBER}\"/" smarttubetv/build.gradle
+          echo "name=$(grep versionName smarttubetv/build.gradle | head -n 1 | awk -F'"' '{print $2}')" >> "$GITHUB_OUTPUT"
+
+      - name: Configure signing
+        if: ${{ env.HAS_SIGNING_KEY == 'true' }}
+        run: |
+          echo "storePassword=${{ secrets.KEY_STORE_PASSWORD }}" > keystore.properties
+          echo "keyAlias=${{ secrets.ALIAS }}" >> keystore.properties
+          echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> keystore.properties
+          echo "storeFile=${{ github.workspace }}/key.jks" >> keystore.properties
+          echo "${{ secrets.SIGNING_KEY }}" | base64 --decode > "${{ github.workspace }}/key.jks"
+
+      - name: Build
+        run: |
+          chmod +x gradlew
+          if [ "$HAS_SIGNING_KEY" = "true" ]; then
+            ./gradlew --no-daemon assembleStbetaRelease
+            echo "VARIANT=release" >> "$GITHUB_ENV"
+          else
+            ./gradlew --no-daemon assembleStbetaDebug
+            echo "VARIANT=debug" >> "$GITHUB_ENV"
+          fi
+
+      - name: Collect APKs
+        run: |
+          mkdir -p dist
+          cp smarttubetv/build/outputs/apk/stbeta/${VARIANT}/*.apk dist/
+          ls -la dist
+
+      - name: Upload APKs
+        uses: actions/upload-artifact@v4
+        with:
+          name: TizenSmart_${{ steps.ver.outputs.name }}
+          path: dist/*.apk
+          if-no-files-found: error
+
+      - name: Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.apk
+          generate_release_notes: true

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- MOD: add custom widgets to the title -->
+
+<!--
+     Copyright (C) 2014 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <include layout="@layout/lb_title_view_logo"/>
+
+    <!-- MOD: TizenTube-like search: voice button + search field (visible while the sidebar is collapsed), both open the search screen -->
+    <LinearLayout android:id="@+id/title_search_container"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:layout_marginStart="32dp"
+                  android:layout_marginTop="20dp"
+                  android:layout_gravity="top|start">
+
+        <View
+            android:id="@+id/title_voice"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/title_voice_bg"
+            android:focusable="true"
+            android:nextFocusRight="@id/title_search_field"
+            android:contentDescription="@string/action_search" />
+
+        <TextView
+            android:id="@+id/title_search_field"
+            android:layout_width="360dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/title_search_pill_bg"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:nextFocusLeft="@id/title_voice"
+            android:nextFocusRight="@id/title_search_field"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:singleLine="true"
+            android:text="@string/lb_search_bar_hint"
+            android:textColor="@color/title_search_text"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- MOD: add additional buttons -->
+    <!-- Hidden while the sidebar is collapsed (see BrowseFragment.updateTitleOrbs): otherwise the buttons hide behind the sidebar but still take focus -->
+    <LinearLayout android:id="@+id/title_orbs_container"
+                  android:visibility="invisible"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:layout_gravity="center_vertical|start">
+
+        <com.liskovsoft.smartyoutubetv2.tv.ui.widgets.search.RoundSearchOrbView
+            android:id="@+id/title_orb"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:transitionGroup="true"
+            android:layout_gravity="center_vertical|start"
+            android:nextFocusRight="@id/account_orb"
+            android:visibility="invisible" />
+
+        <com.liskovsoft.smartyoutubetv2.tv.ui.widgets.search.AccountOrbView
+            android:id="@+id/account_orb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:transitionGroup="true"
+            android:layout_marginStart="12dp"
+            android:layout_gravity="center_vertical|start"
+            android:nextFocusLeft="@id/title_search_field"
+            android:nextFocusRight="@id/language_orb"
+            app:searchOrbIcon="@drawable/browse_title_account"
+            app:searchOrbColor="@color/orb_color"
+            app:searchOrbBrightColor="@color/orb_bright_color"
+            app:searchOrbIconColor="@color/orb_icon_color"
+            android:visibility="gone" />
+
+
+        <androidx.leanback.widget.SearchOrbView
+            android:id="@+id/language_orb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:transitionGroup="true"
+            android:layout_marginStart="@dimen/search_bar_right_items_margin"
+            android:nextFocusLeft="@id/account_orb"
+            android:nextFocusRight="@id/exit_pip"
+            app:searchOrbIcon="@drawable/search_bar_language_orb"
+            app:searchOrbColor="@color/orb_color"
+            app:searchOrbBrightColor="@color/orb_bright_color"
+            app:searchOrbIconColor="@color/orb_icon_color"
+            android:visibility="gone" />
+
+        <androidx.leanback.widget.SearchOrbView
+            android:id="@+id/exit_pip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:transitionGroup="true"
+            android:layout_marginStart="@dimen/search_bar_right_items_margin"
+            android:nextFocusLeft="@id/language_orb"
+            app:searchOrbIcon="@drawable/browse_title_pip"
+            app:searchOrbColor="@color/orb_color"
+            app:searchOrbBrightColor="@color/orb_bright_color"
+            app:searchOrbIconColor="@color/orb_icon_color"
+            android:visibility="gone" />
+
+        <com.liskovsoft.smartyoutubetv2.tv.ui.widgets.marqueetextviewcompat.TitleMarqueeTextViewCompat
+            android:id="@+id/pip_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/search_bar_right_items_margin"
+            android:layout_gravity="center_vertical"
+            android:maxWidth="@dimen/pip_title_max_width"
+            android:textSize="@dimen/pip_title_size"
+            style="?attr/browseTitleTextStyle"
+            android:ellipsize="marquee"
+            android:visibility="gone" />
+    </LinearLayout>
+</merge>

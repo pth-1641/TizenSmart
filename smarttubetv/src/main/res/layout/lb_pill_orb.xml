@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Sidebar-style pill (icon + label) used instead of the round orb -->
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <View
+        android:id="@+id/search_orb"
+        android:layout_width="165dp"
+        android:layout_height="40dp"
+        android:background="@drawable/pill_orb_bg" />
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center_vertical|start"
+        android:layout_marginStart="14dp"
+        android:src="@drawable/lb_ic_in_app_search"
+        android:contentDescription="@string/orb_search_action" />
+    <TextView
+        android:id="@+id/pill_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|start"
+        android:layout_marginStart="48dp"
+        android:maxWidth="130dp"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:fontFamily="sans-serif-medium" />
+</merge>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="true">
+        <layer-list>
+            <item><shape android:shape="oval"><solid android:color="#F1F1F1" /></shape></item>
+            <item android:drawable="@drawable/ic_title_mic_dark" android:left="9dp" android:top="9dp" android:right="9dp" android:bottom="9dp" />
+        </layer-list>
+    </item>
+    <item>
+        <layer-list>
+            <item><shape android:shape="oval"><solid android:color="#272727" /></shape></item>
+            <item android:drawable="@drawable/ic_title_mic_light" android:left="9dp" android:top="9dp" android:right="9dp" android:bottom="9dp" />
+        </layer-list>
+    </item>
+</selector>

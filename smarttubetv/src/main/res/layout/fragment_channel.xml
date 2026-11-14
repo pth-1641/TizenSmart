@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- channel banner: scrolls away together with the header row -->
+    <ImageView
+        android:id="@+id/channel_banner"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:alpha="1"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/channel_banner_scrim"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/channel_banner_scrim"
+        android:visibility="gone" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="48dp"
+        android:clipChildren="false"
+        android:clipToPadding="false">
+
+        <fragment
+            android:id="@+id/channel_fragment"
+            android:name="com.liskovsoft.smartyoutubetv2.tv.ui.channel.ChannelFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+</FrameLayout>
