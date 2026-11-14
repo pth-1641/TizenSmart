@@ -66,7 +66,18 @@ jobs:
           path: dist/*.apk
           if-no-files-found: error
 
-      - name: Release
+      - name: Publish latest build to Releases
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete latest -R "${{ github.repository }}" --cleanup-tag -y || true
+          gh release create latest dist/*.apk -R "${{ github.repository }}" \
+            --target "${{ github.sha }}" --prerelease \
+            --title "TizenSmart ${{ steps.ver.outputs.name }} (latest)" \
+            --notes "Automatic build of commit ${{ github.sha }}. Pick the APK for your device: arm64-v8a (most boxes), armeabi-v7a (old 32-bit), x86, or universal."
+
+      - name: Release (version tags)
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
