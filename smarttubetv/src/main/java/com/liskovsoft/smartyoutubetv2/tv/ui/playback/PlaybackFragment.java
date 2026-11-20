@@ -721,9 +721,10 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
                     View header = holder.getHeaderViewHolder().view;
                     header.setPaddingRelative(start, header.getPaddingTop(), header.getPaddingEnd(), header.getPaddingBottom());
 
-                    // TizenTube-like slide: the selected card always sits at the start of the row
+                    // TizenTube-like slide: the selected card sits at the start of the row,
+                    // but scrolling stops when the last card reaches the end (no empty space on the right)
                     androidx.leanback.widget.HorizontalGridView rowGrid = ((ListRowPresenter.ViewHolder) holder).getGridView();
-                    rowGrid.setWindowAlignment(androidx.leanback.widget.BaseGridView.WINDOW_ALIGN_LOW_EDGE);
+                    rowGrid.setWindowAlignment(androidx.leanback.widget.BaseGridView.WINDOW_ALIGN_BOTH_EDGE);
                     rowGrid.setWindowAlignmentOffset(start);
                     rowGrid.setWindowAlignmentOffsetPercent(0f);
                     rowGrid.setItemAlignmentOffset(0);
