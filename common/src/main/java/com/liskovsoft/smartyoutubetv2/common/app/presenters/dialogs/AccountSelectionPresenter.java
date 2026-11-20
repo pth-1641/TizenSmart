@@ -66,6 +66,19 @@ public class AccountSelectionPresenter extends BasePresenter<Void> {
         MediaServiceManager.instance().loadAccounts(this::nextAccountOrDialog);
     }
 
+    /**
+     * Opens the account picker (or the sign-in settings when there are no accounts yet) instead of cycling accounts.
+     */
+    public void showDialogOrSignIn() {
+        MediaServiceManager.instance().loadAccounts(accounts -> {
+            if (accounts == null || accounts.isEmpty()) {
+                AccountSettingsPresenter.instance(getContext()).show();
+            } else {
+                show(true);
+            }
+        });
+    }
+
     public void unhold() {
         sInstance = null;
     }

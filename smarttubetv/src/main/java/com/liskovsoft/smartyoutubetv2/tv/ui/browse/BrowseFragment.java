@@ -278,7 +278,7 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
         mAccountItem.bringToFront();
         mAccountItem.setTranslationZ(50 * d); // above the sidebar list (it has its own elevation)
 
-        mAccountItem.setOnClickListener(v -> AccountSelectionPresenter.instance(getContext()).nextAccountOrDialog());
+        mAccountItem.setOnClickListener(v -> AccountSelectionPresenter.instance(getContext()).showDialogOrSignIn());
         mAccountItem.setOnLongClickListener(v -> {
             AccountSettingsPresenter.instance(getContext()).show();
             return true;
